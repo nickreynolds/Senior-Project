@@ -30,6 +30,7 @@ public class FPSKinectCameraScript : MonoBehaviour {
 
     void OnGUI()
     {
+        //jijii
         if (player != null && script_player != null)
         {
             if (script_kinect.timer < 100)
