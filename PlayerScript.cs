@@ -74,7 +74,7 @@ public class PlayerScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
     {
-        transform.position = playerTransform.position;
+        transform.position = -playerTransform.position;
         transform.rotation = playerTransform.rotation;
 
         if (thisPlayerColor == Color.black)
