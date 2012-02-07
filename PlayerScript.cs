@@ -25,12 +25,13 @@ public class PlayerScript : MonoBehaviour {
     public NetworkViewID netid;
     public string theID;
 
-    List<ManipulatableScript> ownedPrisms;
-    SecondaryProjectileScript secondaryTemplate;
-    NetworkView thisView;
+    public List<ManipulatableScript> ownedPrisms;
+    public SecondaryProjectileScript secondaryTemplate;
+    public NetworkView thisView;
 
     public Color thisPlayerColor;
     public List<Vector3> allColors;
+    public FPSKinectCameraScript camera_script;
 
 	// Use this for initialization
     void OnNetworkInstantiate(NetworkMessageInfo info) 
@@ -41,7 +42,7 @@ public class PlayerScript : MonoBehaviour {
         playerTransform = cameraTransform = this.transform;
 
         //deal with this when adding multiple player support
-        thisView = this.gameObject.GetComponent(typeof(NetworkView)) as NetworkView;
+        //thisView = this.gameObject.GetComponent(typeof(NetworkView)) as NetworkView;
         netid = thisView.viewID;
         theID = netid.ToString();
         char[] space = {' '};
@@ -49,9 +50,10 @@ public class PlayerScript : MonoBehaviour {
         theID = theID.Substring(tempIndex + 1);
         int tempID = int.Parse(theID);
         setID(tempID);
-        GameObject secondary = GameObject.FindGameObjectWithTag("Secondary");
-        secondaryTemplate = secondary.GetComponent(typeof(SecondaryProjectileScript)) as SecondaryProjectileScript;
-
+        //GameObject secondary = GameObject.FindGameObjectWithTag("Secondary");
+        //secondaryTemplate = secondary.GetComponent(typeof(SecondaryProjectileScript)) as SecondaryProjectileScript;
+        GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");
+        camera_script = camera.GetComponent(typeof(FPSKinectCameraScript)) as FPSKinectCameraScript;
        
 	}
 
@@ -74,7 +76,7 @@ public class PlayerScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
     {
-        transform.position = -playerTransform.position;
+        transform.position = playerTransform.position;
         transform.rotation = playerTransform.rotation;
 
         if (thisPlayerColor == Color.black)
@@ -147,6 +149,16 @@ public class PlayerScript : MonoBehaviour {
         return ID;
     }
 
+    [RPC]
+    public void disownAllPrisms(int nothing)
+    {
+        foreach (ManipulatableScript ms in ownedPrisms)
+        {
+            ms.makeNotOwned();
+        }
+        ownedPrisms.Clear();
+    }
+
     public void setManipulatableAsOwned(ManipulatableScript ms)
     {
         ownedPrisms.Add(ms);
@@ -179,7 +191,9 @@ public class PlayerScript : MonoBehaviour {
     {
         //Debug.Log("PLAYER FIRING SECONDARY");
         SecondaryProjectileScript sps;
-        sps = Instantiate(secondaryTemplate, this.transform.position, this.transform.rotation) as SecondaryProjectileScript;
+        //sps = Instantiate(secondaryTemplate, this.transform.position, this.transform.rotation) as SecondaryProjectileScript;
+        //secondaryTemplate
+        sps = Instantiate(secondaryTemplate, camera_script.getTransform().position, camera_script.getTransform().rotation) as SecondaryProjectileScript;
         sps.reinitialize();
         sps.setLifeTime(500);
         sps.setOwner(this);

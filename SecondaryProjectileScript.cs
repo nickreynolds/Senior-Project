@@ -12,11 +12,12 @@ public class SecondaryProjectileScript : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
+        //lifetime = 500;
         deltaPos = new Vector3(0.0f, 0.0f, 1.0f);
         deltaPos = transform.rotation*deltaPos;
-        deltaPos = .03f * deltaPos;
+        deltaPos = .3f * deltaPos;
 
-        transform.position += 100 * deltaPos;
+        transform.position += 10 * deltaPos;
         //Debug.Log("SECONDARY CREATED @: " + transform.position[0] + ", " + transform.position[1] + ", " + transform.position[2]);
 	}
 
@@ -24,9 +25,9 @@ public class SecondaryProjectileScript : MonoBehaviour
     {
         deltaPos = new Vector3(0.0f, 0.0f, 1.0f);
         deltaPos = transform.rotation * deltaPos;
-        deltaPos = .03f * deltaPos;
+        deltaPos = .3f * deltaPos;
 
-        transform.position += 100 * deltaPos;
+        transform.position += 10 * deltaPos;
         //Debug.Log("SECONDARY REINITIALIZED @: " + transform.position[0] + ", " + transform.position[1] + ", " + transform.position[2]);
     }
 

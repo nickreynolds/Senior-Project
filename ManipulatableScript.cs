@@ -55,6 +55,14 @@ public class ManipulatableScript : MonoBehaviour {
         owner.setManipulatableAsOwned(this);
         this.renderer.material.color = owner.getColor();
     }
+
+    public void makeNotOwned()
+    {
+        ownerID = -1;
+        owner = null;
+        this.renderer.material.color = Color.white;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -64,7 +72,12 @@ public class ManipulatableScript : MonoBehaviour {
     void FixedUpdate()
     {
         float heightDifference = transform.position[1] - desiredHeight;
-        if (Mathf.Abs(heightDifference) > .05f)
+        if (Mathf.Abs(heightDifference) <= .05f && Mathf.Abs(heightDifference) >= .001f)
+        {
+            transform.position = new Vector3(transform.position[0], desiredHeight, transform.position[2]);
+            //transform.position += new Vector3(0.0f, heightDifference, 0.0f);
+        }
+        else if (Mathf.Abs(heightDifference) > .05f)
         {
             if (heightDifference > 0)
             {
@@ -75,6 +88,7 @@ public class ManipulatableScript : MonoBehaviour {
                 transform.position += new Vector3(0.0f, 0.05f, 0.0f);
             }
         }
+
     }
 
     public void addDesiredHeight(float h)

@@ -30,7 +30,6 @@ public class FPSKinectCameraScript : MonoBehaviour {
 
     void OnGUI()
     {
-        //jijii
         if (player != null && script_player != null)
         {
             if (script_kinect.timer < 100)
@@ -58,5 +57,10 @@ public class FPSKinectCameraScript : MonoBehaviour {
                 GUI.Label(new Rect(100, 100, 600, 600), "GO");
             }
         }
+    }
+
+    public Transform getTransform()
+    {
+        return transform;
     }
 }
